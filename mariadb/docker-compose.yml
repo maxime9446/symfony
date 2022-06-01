@@ -1,0 +1,36 @@
+version: '2.4'
+
+volumes:
+ db_mariadb:
+
+services:
+  mariadb:
+    image: mariadb
+    restart: always
+    #command: --transaction-isolation=READ-COMMITTED --log-bin=ROW --innodb-read-only-compressed=OFF
+    volumes:
+      - db_mariadb:/var/lib/mysql
+    networks:
+      - frontend
+    environment:
+      - MYSQL_ROOT_PASSWORD=3Z62EX5bSL9iS9fuxu9
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_USER=test
+      - MYSQL_PASSWORD=E0oJN6yF56Lbujp1qQ6
+      - MYSQL_DATABASE=test
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    depends_on:
+      - mariadb
+    networks:
+      - frontend
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+
+networks:
+  frontend:
+    external: true
